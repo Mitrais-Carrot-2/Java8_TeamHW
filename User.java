@@ -1,10 +1,11 @@
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
 public class User {
     interface Transaction{
-        List<Book> pinjamBuku(List<Book> books);
+        Record rentBooks(List<Book> books, LocalDateTime date);
     }
     interface Sort{
         List<Book> sortRating(List<Book> books);
@@ -14,24 +15,37 @@ public class User {
     }
 
     public static void main(String[] args) {
+        Record record = new Record();
         Available availableBooks = (books) -> {
             return books.stream().filter(b -> b.getAvailable()==true).collect(Collectors.toList());
         };
-        Transaction borrowA = (books) -> {
+        Transaction rentA = (books, date) -> {
             availableBooks.check(books).forEach(b -> {
                 b.setAvailable(false);
             });
-            return books;
+            return new Record(books, date);
         };
 
         List<Book> listBooks = new ArrayList<>();
         Book bookA = new Book("A", 4.5, true);
         Book bookB = new Book("B", 4.0, false);
         Book bookC = new Book("C", 4.3, true);
+        Book bookD = new Book("D", 3.3, true);
+        Book bookE = new Book("E", 3.0, true);
+        Book bookF = new Book("F", 4.1, true);
+        Book bookG = new Book("G", 3.2, true);
+        Book bookH = new Book("H", 4.8, false);
+        Book bookI = new Book("1", 3.4, true);
 
         listBooks.add(bookA);
         listBooks.add(bookB);
         listBooks.add(bookC);
+        listBooks.add(bookD);
+        listBooks.add(bookE);
+        listBooks.add(bookF);
+        listBooks.add(bookG);
+        listBooks.add(bookH);
+        listBooks.add(bookI);
 
         System.out.println("List of Books:");
         printListOfBooks(listBooks);
@@ -39,23 +53,49 @@ public class User {
         System.out.println("List of available Books:");
         printListOfBooks(availableBooks.check(listBooks));
 
-        List<Book> borrowedBooks = new ArrayList<>();
-        borrowedBooks.add(bookC);
-        System.out.println("List of borrowed Books:");
-        printListOfBooks(borrowedBooks);
+        List<Book> recordTransaction = new ArrayList<>();
+        recordTransaction.add(bookC);
+        recordTransaction.add(bookG);
+        System.out.println("List of rented Books:");
+        printListOfBooks(recordTransaction);
 
-        borrowA.pinjamBuku(borrowedBooks);
+        record = rentA.rentBooks(recordTransaction, LocalDateTime.now());
 
         System.out.println("List of available Books:");
         printListOfBooks(availableBooks.check(listBooks));
+
+        System.out.println("List of Books with rating >4:");
+        List<Book> goodRating = listBooks.stream()
+                .filter(b -> b.getRating()>4.0)
+                .collect(Collectors.toList());
+        printListOfBooks(goodRating);
+
+        System.out.println("List of Rating >4:");
+        List<Double> ratingsMoreThanFour = goodRating.stream()
+                .map(b -> b.getRating())
+                .collect(Collectors.toList());
+        System.out.println(ratingsMoreThanFour);
+
+        System.out.println("Biggest rating:");
+        System.out.println(ratingsMoreThanFour.stream().reduce(0.0, Double::max));
+
+        System.out.println("Record:");
+        printRecord(record);
     }
 
     static void printListOfBooks(List<Book> books){
         books.forEach(a -> {
+            System.out.println("------------------------");
             System.out.println(a.getTitle());
             System.out.println(a.getRating());
             System.out.println(a.getAvailable());
-            System.out.println("------------------------");
         });
+    }
+    static void printRecord(Record records){
+        List<Book> books =  records.getBooks();
+        LocalDateTime rentDate = records.getDate();
+        printListOfBooks(books);
+        System.out.println("------------------------");
+        System.out.println(rentDate);
     }
 }
