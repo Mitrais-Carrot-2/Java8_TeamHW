@@ -6,7 +6,6 @@ public class Book {
     private Boolean available;
     private Optional<Integer> publishedYear;
 
-
     public Book(String title, Double rating, Boolean available) {
         this.title = title;
         this.rating = rating;
@@ -17,7 +16,7 @@ public class Book {
     public Integer getPublishedYear() {
         if (publishedYear.isPresent()) {
             return publishedYear.get();
-        } else{
+        } else {
             return 0;
         }
     }
