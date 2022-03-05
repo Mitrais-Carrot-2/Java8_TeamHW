@@ -4,20 +4,22 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public class User {
-    interface Transaction{
+    interface Transaction {
         Record rentBooks(List<Book> books, LocalDateTime date);
     }
-    interface Sort{
+
+    interface Sort {
         List<Book> sortRating(List<Book> books);
     }
-    interface Available{
+
+    interface Available {
         List<Book> check(List<Book> books);
     }
 
     public static void main(String[] args) {
         Record record = new Record();
         Available availableBooks = (books) -> {
-            return books.stream().filter(b -> b.getAvailable()==true).collect(Collectors.toList());
+            return books.stream().filter(b -> b.getAvailable() == true).collect(Collectors.toList());
         };
         Transaction rentA = (books, date) -> {
             availableBooks.check(books).forEach(b -> {
@@ -36,6 +38,15 @@ public class User {
         Book bookG = new Book("G", 3.2, true);
         Book bookH = new Book("H", 4.8, false);
         Book bookI = new Book("1", 3.4, true);
+
+        // add published year of the book if known
+
+        bookA.setPublishedYear(2000);
+        bookB.setPublishedYear(1971);
+        bookC.setPublishedYear(2012);
+        bookF.setPublishedYear(2019);
+        bookH.setPublishedYear(2019);
+        bookI.setPublishedYear(2006);
 
         listBooks.add(bookA);
         listBooks.add(bookB);
@@ -66,7 +77,7 @@ public class User {
 
         System.out.println("List of Books with rating >4:");
         List<Book> goodRating = listBooks.stream()
-                .filter(b -> b.getRating()>4.0)
+                .filter(b -> b.getRating() > 4.0)
                 .collect(Collectors.toList());
         printListOfBooks(goodRating);
 
@@ -81,9 +92,22 @@ public class User {
 
         System.out.println("Record:");
         printRecord(record);
+
+        printListOfBooksByYearPublished(listBooks, 2019);
+        ;
     }
 
-    static void printListOfBooks(List<Book> books){
+    static void printListOfBooksByYearPublished(List<Book> books, int year) {
+        List<Book> onYear = books.stream()
+                .filter(book -> book.getPublishedYear() == year)
+                .collect(Collectors.toList());
+        System.out.println("Book that published on " + String.valueOf(year) + " is:");
+        for (Book book : onYear) {
+            System.out.println(book.getTitle());
+        }
+    }
+
+    static void printListOfBooks(List<Book> books) {
         books.forEach(a -> {
             System.out.println("------------------------");
             System.out.println(a.getTitle());
@@ -91,8 +115,9 @@ public class User {
             System.out.println(a.getAvailable());
         });
     }
-    static void printRecord(Record records){
-        List<Book> books =  records.getBooks();
+
+    static void printRecord(Record records) {
+        List<Book> books = records.getBooks();
         LocalDateTime rentDate = records.getDate();
         printListOfBooks(books);
         System.out.println("------------------------");
