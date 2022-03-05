@@ -93,7 +93,7 @@ public class User {
                 .collect(Collectors.toList());
         System.out.println(ratingsMoreThanFour);
 
-//        Highest Rated Books
+////        Highest Rated Books
         System.out.println("\nBiggest rating:");
         System.out.println(ratingsMoreThanFour.stream().reduce(0.0, Double::max));
 
