@@ -37,6 +37,16 @@ public class User {
         Book bookH = new Book("H", 4.8, false);
         Book bookI = new Book("1", 3.4, true);
 
+        //add published year of the book if known
+
+        bookA.setPublishedYear(2000);
+        bookB.setPublishedYear(1971);
+        bookC.setPublishedYear(2012);
+        bookF.setPublishedYear(2019);
+        bookH.setPublishedYear(2019);
+        bookI.setPublishedYear(2006);
+        
+
         listBooks.add(bookA);
         listBooks.add(bookB);
         listBooks.add(bookC);
@@ -81,6 +91,18 @@ public class User {
 
         System.out.println("Record:");
         printRecord(record);
+
+        printListOfBooksByYearPublished(listBooks, 2019);;
+    }
+
+    static void printListOfBooksByYearPublished(List<Book> books, int year){
+        List<Book> onYear = books.stream()
+                        .filter(book -> book.getPublishedYear() == year)
+                        .collect(Collectors.toList());
+        System.out.println("Book that published on "+String.valueOf(year)+" is:");
+        for (Book book : onYear) {
+            System.out.println(book.getTitle());
+        }
     }
 
     static void printListOfBooks(List<Book> books){
