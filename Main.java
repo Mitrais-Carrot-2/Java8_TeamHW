@@ -31,10 +31,6 @@ public class Main {
                     b.setAvailable(false);
                     records.add(new Record(b, date, user, id));
                 }
-//                else {
-//                    System.out.println("------------------------");
-//                    System.out.println(b.getTitle()+" unavailaible");
-//                }
             });
         };
 
@@ -70,7 +66,7 @@ public class Main {
 
         System.out.println("List of Books: "+ listBooks.size());
         printListOfBooks(listBooks);
-
+        System.out.println();
         System.out.println("List of available Books: "+ availableBooks.check(listBooks).size());
         printListOfBooks(availableBooks.check(listBooks));
 
@@ -82,6 +78,7 @@ public class Main {
         recordTransactionB.add(bookA);
         recordTransactionB.add(bookH);
 
+        System.out.println();
         System.out.println("List of unavailable Books: "+ unavailableBooks.check(listBooks).size());
         printListOfBooks(unavailableBooks.check(listBooks));
 
@@ -92,29 +89,38 @@ public class Main {
         Thread.sleep(1000);
         rent.rentBooks(recordTransactionB, LocalDateTime.now(), userB, LocalTime.now().toString());
 
+        System.out.println();
         System.out.println("List of available Books: "+ availableBooks.check(listBooks).size());
         printListOfBooks(availableBooks.check(listBooks));
 
+        System.out.println();
         System.out.println("List of Books with rating >4:");
         List<Book> goodRating = listBooks.stream()
                 .filter(b -> b.getRating() > 4.0)
                 .collect(Collectors.toList());
         printListOfBooks(goodRating);
 
+        System.out.println();
         System.out.println("------------------------");
-        System.out.println("List of Book with rating >4:");
+        System.out.println("List of rating >4:");
         List<Double> ratingsMoreThanFour = goodRating.stream()
                 .map(b -> b.getRating())
                 .collect(Collectors.toList());
         System.out.println(ratingsMoreThanFour);
 
+        System.out.println();
         System.out.println("------------------------");
         System.out.println("Biggest rating:");
         System.out.println(ratingsMoreThanFour.stream().reduce(0.0, Double::max));
 
+        System.out.println();
         System.out.println("------------------------");
         System.out.println("Record:");
         printRecord(records);
+
+        System.out.println();
+        System.out.println("List of "+userA.getName()+ "'s histories:");
+        printRecordPerUser(records.stream().filter(t -> t.getUser().getId()==userA.getId()).collect(Collectors.toList()));
 
         printListOfBooksByYearPublished(listBooks, 2019);
     }
@@ -142,6 +148,16 @@ public class Main {
         records.forEach(r -> {
             LocalDateTime rentDate = r.getDate();
             System.out.println(r.getUser().getName());
+            System.out.println(r.getBooks().getTitle());
+            System.out.println(rentDate.getDayOfMonth()+" "+rentDate.getMonth()+" "+rentDate.getYear()+" ~ "+rentDate.getHour()+":"+rentDate.getMinute()+":"+rentDate.getSecond());
+            System.out.println("------------------------");
+        });
+    }
+
+    static void printRecordPerUser(List<Record> records) {
+        System.out.println("------------------------");
+        records.forEach(r -> {
+            LocalDateTime rentDate = r.getDate();
             System.out.println(r.getBooks().getTitle());
             System.out.println(rentDate.getDayOfMonth()+" "+rentDate.getMonth()+" "+rentDate.getYear()+" ~ "+rentDate.getHour()+":"+rentDate.getMinute()+":"+rentDate.getSecond());
             System.out.println("------------------------");
