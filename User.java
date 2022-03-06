@@ -120,7 +120,7 @@ public class User {
     }
 
     static void printListOfBooks(List<Book> books){
-        System.out.println("Title \t Rating \t Available \t\t Initial Rented Date \t\t\tFinal Rented Date \t\t Rented Period (Days) \t Exceeded Duration (s)");
+        System.out.println("Title \t Published Year \t Rating \t Available \t\t Initial Rented Date \t\t\tFinal Rented Date \t\t Rented Period (Days) \t Exceeded Duration (s)");
         books.forEach(System.out::println);
     }
 

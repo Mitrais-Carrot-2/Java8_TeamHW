@@ -73,8 +73,12 @@ public class Book {
 
     @Override
     public String toString() {
-        String s =  String.format("%-10s%-13.1f%-13b", title, rating, available);
-        if (rentedDays > 0) s = String.format("%-10s%-13.1f%-12b%-30s%-40s%-20d%-30d", title, rating, available, initialDate, finalDate, rentedDays, exceededDuration);
+        Integer yearInt = getPublishedYear();
+        String yearStr = String.valueOf(yearInt);
+        if (yearInt == 0) yearStr = "";
+
+        String s =  String.format("%-13s%-18s%-13.1f%-13b", title, yearStr, rating, available);
+        if (rentedDays > 0) s = String.format("%-13s%-18s%-13.1f%-12b%-30s%-40s%-20d%-30d", title, yearStr, rating, available, initialDate, finalDate, rentedDays, exceededDuration);
 
         return s;
     }
