@@ -4,6 +4,7 @@ import java.time.LocalDateTime;
 import java.time.Period;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 public class User {
@@ -114,6 +115,13 @@ public class User {
         System.out.println("\nPrint Book by Year Published:");
         printListOfBooksByYearPublished(listBooks, 2019);
 
+//          Modify unavailable books' rented period if null by implementing Optional
+        System.out.println("\nSet unavailable books with no rented period to 999");
+        List<Book> modifiedList = listBooks.stream()
+                .filter(book -> !book.getAvailable())
+                .collect(Collectors.toList());
+        printListOfBooks(modifyNullRentedPeriod(modifiedList));
+
 ////        All Books
         System.out.println("\nList of Books:");
         printListOfBooks(listBooks);
@@ -139,4 +147,14 @@ public class User {
         }
     }
 
+    static List<Book> modifyNullRentedPeriod(List<Book> books){
+        //List<Book> result = new ArrayList<>();
+        for (Book book : books) {
+            if (book.getRentedDays() == 0){
+                book.setRentedDays(999);
+            }
+            book.setInitialDate(Optional.ofNullable(book.getInitialDate()).orElse(LocalDateTime.now()));
+        }
+        return books;
+    }
 }
