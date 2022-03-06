@@ -102,7 +102,7 @@ public class User {
 
         System.out.println("\nList of Ratings > 4:");
         List<Double> ratingsMoreThanFour = goodRating.stream()
-                .map(b -> b.getRating())
+                .map(Book::getRating)
                 .collect(Collectors.toList());
         System.out.println(ratingsMoreThanFour);
 

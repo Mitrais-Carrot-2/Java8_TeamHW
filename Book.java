@@ -10,7 +10,7 @@ public class Book {
     private LocalDateTime initialDate;
     private LocalDateTime finalDate;
     private Integer rentedDays = 0;
-    private Long exceededDuration = Long.valueOf(0);
+    private Long exceededDuration = 0L;
 
     public Book(String title, Double rating, Boolean available) {
         this.title = title;
