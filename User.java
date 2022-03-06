@@ -10,10 +10,12 @@ public class User {
     interface Transaction{
         void updateRentedBook(Record record, String title, LocalDateTime initialDate, Integer rentedDays);
     }
-    interface Sort{
+
+    interface Sort {
         List<Book> sortRating(List<Book> books);
     }
-    interface Available{
+
+    interface Available {
         List<Book> check(List<Book> books);
     }
 
@@ -44,6 +46,15 @@ public class User {
         Book bookH = new Book("H", 4.8, false);
         Book bookI = new Book("I", 3.4, true);
 
+        // add published year of the book if known
+
+        bookA.setPublishedYear(2000);
+        bookB.setPublishedYear(1971);
+        bookC.setPublishedYear(2012);
+        bookF.setPublishedYear(2019);
+        bookH.setPublishedYear(2019);
+        bookI.setPublishedYear(2006);
+
         listBooks.add(bookA);
         listBooks.add(bookB);
         listBooks.add(bookC);
@@ -54,10 +65,12 @@ public class User {
         listBooks.add(bookH);
         listBooks.add(bookI);
 
+////        All Books
         System.out.println("List of Books:");
         printListOfBooks(listBooks);
 
-        System.out.println("\nList of available Books:");
+////        Available Books
+        System.out.println("\nList of Available Books:");
         printListOfBooks(availableBooks.check(listBooks));
 
 ////        Rent Books
@@ -77,26 +90,31 @@ public class User {
         System.out.println("\nRecord of Rented Books:");
         printRecord(rentedBooksRecord);
 
-        System.out.println("\nList of available Books:");
+        System.out.println("\nList of Available Books:");
         printListOfBooks(availableBooks.check(listBooks));
 
 ////        Books with Rating > 4
-        System.out.println("\nList of Books with rating >4:");
+        System.out.println("\nList of Books with Rating > 4:");
         List<Book> goodRating = listBooks.stream()
-                .filter(b -> b.getRating()>4.0)
+                .filter(b -> b.getRating() > 4.0)
                 .collect(Collectors.toList());
         printListOfBooks(goodRating);
 
-        System.out.println("\nList of Rating >4:");
+        System.out.println("\nList of Ratings > 4:");
         List<Double> ratingsMoreThanFour = goodRating.stream()
                 .map(b -> b.getRating())
                 .collect(Collectors.toList());
         System.out.println(ratingsMoreThanFour);
 
-////        Highest Rated Books
-        System.out.println("\nBiggest rating:");
+////        Biggest Rating
+        System.out.println("\nBiggest Rating:");
         System.out.println(ratingsMoreThanFour.stream().reduce(0.0, Double::max));
 
+////        Print Books by Year Published
+        System.out.println("\nPrint Book by Year Published:");
+        printListOfBooksByYearPublished(listBooks, 2019);
+
+////        All Books
         System.out.println("\nList of Books:");
         printListOfBooks(listBooks);
     }
@@ -105,8 +123,20 @@ public class User {
         System.out.println("Title \t Rating \t Available \t\t Initial Rented Date \t\t\tFinal Rented Date \t\t Rented Period (Days) \t Exceeded Duration (s)");
         books.forEach(System.out::println);
     }
-    static void printRecord(Record records){
-        List<Book> books =  records.getBooks();
+
+    static void printRecord(Record records) {
+        List<Book> books = records.getBooks();
         printListOfBooks(books);
     }
+
+    static void printListOfBooksByYearPublished(List<Book> books, int year) {
+        List<Book> onYear = books.stream()
+                .filter(book -> book.getPublishedYear() == year)
+                .collect(Collectors.toList());
+        System.out.println("Books that were published in " + String.valueOf(year) + " is:");
+        for (Book book : onYear) {
+            System.out.println(book.getTitle());
+        }
+    }
+
 }

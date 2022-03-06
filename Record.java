@@ -14,7 +14,7 @@ public class Record {
 
     public Record() {
         List<Book> books = new ArrayList<>();
-        books.add(new Book("-",0.0, false));
+        books.add(new Book("-", 0.0, false));
         this.books = books;
         this.initialDate = LocalDateTime.now();
     }
