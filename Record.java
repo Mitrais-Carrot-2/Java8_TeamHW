@@ -3,54 +3,69 @@ import java.time.LocalDateTime;
 import java.time.Period;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
+import java.util.Random;
 
 public class Record {
-    private String title;
-    private List<Book> books;
-    private LocalDateTime initialDate;
+    private Book book;
+    private User user;
+    private String id;
+    private LocalDateTime initialDate = LocalDateTime.now();
     private LocalDateTime finalDate;
+    private Integer rentedDays;
     private Long exceededDuration = 0L;
 
-    public Record() {
-        List<Book> books = new ArrayList<>();
-        books.add(new Book("-", 0.0, false));
-        this.books = books;
-        this.initialDate = LocalDateTime.now();
-    }
-
-    public Record(List<Book> books){
-        this.books = books;
-    }
-
-    public void setRecord(List<Book> books, String title, LocalDateTime initialDate, Integer days) {
-        this.books = books;
-        this.initialDate = initialDate;
+    public Record(Book book, User user, Integer days) {
+        this.book = book;
+        this.user = user;
+        this.rentedDays = days;
         this.finalDate = initialDate.plus(Period.ofDays(days));
-
-        calcExceededDuration(finalDate);
-
-        this.books.forEach(b -> {
-            if (b.getTitle() == title){
-                b.setInitialDate(initialDate);
-                b.setFinalDate(this.finalDate);
-                b.setRentedDays(days);
-                b.setExceededDuration(this.exceededDuration);
-            }
-        });
+        setExceededDuration(calcExceededDuration(this.finalDate));
     }
 
-    private void calcExceededDuration(LocalDateTime finalDate){
-        this.exceededDuration = Duration.between(finalDate, LocalDateTime.now()).getSeconds();
-        if (this.exceededDuration < 0) this.exceededDuration = 0L;
+    private Long calcExceededDuration(LocalDateTime finalDate){
+        Long exceededDuration = Duration.between(finalDate, LocalDateTime.now()).getSeconds();
+        if (exceededDuration < 0) exceededDuration = 0L;
+        return exceededDuration;
     }
 
-    public List<Book> getBooks() {
-        return books;
+    public Book getBook() {
+        return book;
     }
 
-    public void setBooks(List<Book> books) {
-        this.books = books;
+    public void setBooks(Book book) {
+        this.book = book;
     }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public LocalDateTime getInitialDate() { return initialDate; }
+
+    public void setInitialDate(LocalDateTime initialDate) { this.initialDate = initialDate; }
+
+    public LocalDateTime getFinalDate() { return finalDate; }
+
+    public void setFinalDate(LocalDateTime finalDate) { this.finalDate = finalDate; }
+
+    public Integer getRentedDays() { return rentedDays; }
+
+    public void setRentedDays(Integer rentedDays) { this.rentedDays = rentedDays; }
+
+    public Long getExceededDuration() { return exceededDuration; }
+
+    public void setExceededDuration(Long exceededDuration) { this.exceededDuration = exceededDuration; }
 
 }

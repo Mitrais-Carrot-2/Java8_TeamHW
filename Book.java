@@ -7,8 +7,8 @@ public class Book {
     private Boolean available;
     private Optional<Integer> publishedYear;
 
-    private LocalDateTime initialDate;
-    private LocalDateTime finalDate;
+    private LocalDateTime initialDate = null;
+    private LocalDateTime finalDate = null;
     private Integer rentedDays = 0;
     private Long exceededDuration = 0L;
 
@@ -17,6 +17,13 @@ public class Book {
         this.rating = rating;
         this.available = available;
         this.publishedYear = Optional.empty();
+    }
+
+    public Book(String title, Double rating, Boolean available, Optional<Integer> publishedYear) {
+        this.title = title;
+        this.rating = rating;
+        this.available = available;
+        this.publishedYear = publishedYear;
     }
 
     public Integer getPublishedYear() {
@@ -54,22 +61,22 @@ public class Book {
     public void setAvailable(Boolean available) {
         this.available = available;
     }
-
-    public LocalDateTime getInitialDate() { return initialDate; }
-
-    public void setInitialDate(LocalDateTime initialDate) { this.initialDate = initialDate; }
-
-    public LocalDateTime getFinalDate() { return finalDate; }
-
-    public void setFinalDate(LocalDateTime finalDate) { this.finalDate = finalDate; }
-
-    public Integer getRentedDays() { return rentedDays; }
-
-    public void setRentedDays(Integer rentedDays) { this.rentedDays = rentedDays; }
-
-    public Long getExceededDuration() { return exceededDuration; }
-
-    public void setExceededDuration(Long exceededDuration) { this.exceededDuration = exceededDuration; }
+//
+//    public LocalDateTime getInitialDate() { return initialDate; }
+//
+//    public void setInitialDate(LocalDateTime initialDate) { this.initialDate = initialDate; }
+//
+//    public LocalDateTime getFinalDate() { return finalDate; }
+//
+//    public void setFinalDate(LocalDateTime finalDate) { this.finalDate = finalDate; }
+//
+//    public Integer getRentedDays() { return rentedDays; }
+//
+//    public void setRentedDays(Integer rentedDays) { this.rentedDays = rentedDays; }
+//
+//    public Long getExceededDuration() { return exceededDuration; }
+//
+//    public void setExceededDuration(Long exceededDuration) { this.exceededDuration = exceededDuration; }
 
     @Override
     public String toString() {
@@ -78,7 +85,9 @@ public class Book {
         if (yearInt == 0) yearStr = "";
 
         String s =  String.format("%-13s%-18s%-13.1f%-13b", title, yearStr, rating, available);
-        if (rentedDays > 0) s = String.format("%-13s%-18s%-13.1f%-12b%-30s%-40s%-20d%-30d", title, yearStr, rating, available, initialDate, finalDate, rentedDays, exceededDuration);
+//        String s =  String.format("%-13s%-18s%-13.1f%-12b%-30s%-40s%-20d", title, yearStr, rating, available, initialDate, finalDate, rentedDays);;
+//        if (rentedDays > 0) s = String.format("%-13s%-18s%-13.1f%-12b%-30s%-40s%-20d%-30d", title, yearStr, rating, available, initialDate, finalDate, rentedDays, exceededDuration);
+//        if (rentedDays > 0) s = String.format("%-13s%-18s%-13.1f%-12b%-30s%-40s%-20d", title, yearStr, rating, available, initialDate, finalDate, rentedDays);
 
         return s;
     }
