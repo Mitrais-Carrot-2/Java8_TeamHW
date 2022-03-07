@@ -86,9 +86,6 @@ public class Main {
         rentedBookListB.add(bookH);
 
         int days = 3;
-        LocalDateTime initDate = LocalDateTime.now().minus(Period.ofDays(days));
-        initDate = initDate.minus(Duration.ofHours(5));
-
         
         User userA = new User(1, "User A", "0838423658");
         User userB = new User(2, "User B", "0838254567");
